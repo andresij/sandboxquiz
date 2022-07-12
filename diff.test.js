@@ -47,7 +47,7 @@ test('Running basic test', () => {
   });
 
 
-  test('Running second test', () => {
+  test('Running second test - object 2 is bigger than object 1', () => {
     const first = {
         "foo": {
             "bar": "baz",
@@ -113,6 +113,63 @@ test('Running basic test', () => {
         }, 
         "miss": undefined,
         "new_value":1
+    };
+    
+    expect(diff(first, second)).toStrictEqual(result);
+  });
+
+
+  test('Running third test - object 1 is bigger than object 2', () => {
+    const first = {
+        "foo": {
+            "bar": "baz",
+            "biz": "foo",
+            "ss": {
+                "xx": "yy",
+                "aa": "ss",
+                "asa": {
+                    "a": "b"
+                }
+            },
+            "aa": "ss"
+        },
+        "fiz": {
+            "foo": "baz"
+        },
+        "bar": "baz",
+        "baz": [
+            "foo",
+            "bar"
+        ],
+        "miss": 123    
+    }
+    
+    const second = {
+        "foo": {
+            "bar": "baz1",
+            "biz": "foo",
+            "aa": "ss"
+        },
+        "fiz": {
+            "foo": "baz"
+        },
+        "bar": "baz",
+        "baz": [
+            "foo1"
+        ],
+        "new_value": 1        
+    };
+    
+    const result = {
+        "foo": {
+            "bar": "baz1",
+            "ss": undefined
+        },
+        "baz": [
+            "foo1"
+        ],
+        "miss": undefined,   
+        "new_value": 1        
     };
     
     expect(diff(first, second)).toStrictEqual(result);
