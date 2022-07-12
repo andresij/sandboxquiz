@@ -1,0 +1,55 @@
+Question 1.
+You are implementing a service that will receive video file uploads from mobile clients and needs to re-encode those videos
+to HLS format. You have thousands of clients that are uploading videos at the same time.
+Explain the software architecture for the service. What technology/architecture/patterns would you use and why?
+
+I would have an endpoint for receiving the clients file and then I would run a second process for reencoding the file.
+An option could be two have a second endpoint for triggering the second process (re encoding). So when file upload is ready, I could call this second end point.
+Also, I could provide some parameters to the second endpoint so the process would know how/where to find the source file.
+It would also be a good idea that the second endpoint could return some information about the process (process resulting status, weight, new file location, etc)
+
+
+Question 2.
+How would you implement a backend data storage for a whatsapp-like application (with similar scale demands). For example:
+how would you store chat related data?
+Describe the data model and technologies you would use.
+
+I would use a noSQL database like mongoDB 
+My backend would have some endpoints (all of them should deploy some security feature - could be JWT)
+End points would be:
+
+For sending messages to other people
+POST /new_message  
+header: {security - bearer token} - the backend should be able to identify me with this token
+body: { destination_number:number, message:text, source_time:timestamp, attached_file:file}
+response: {message_id: id, message_status: status} 
+
+For getting messages that someone sent me
+GET /get_messages
+header: {security - bearer token}  
+response: { source_number:number, message:text, source_time:timestamp, attached_file:file}
+
+For updating sent messages status
+GET /get_message_status?memessage_id=id
+header: {security - bearer token}  
+response: {message_id: id, message_status: status}
+
+Database schema:
+clients: {client_id:id, phone_number:number, client_status:enum}
+messages: {message_id, source_id:client_id, destination_id:client_id, message:text, source_time:timestamp, attached_file_id:[<Array>file_id], delivered_time:timestamp, status:enum}
+files: {file_id:id, memessage_id:message_id, file:bytes}
+
+
+
+Question 3.
+You are building an application running inside the web browser (a classic SPA). You have to read a list of user's followers'
+usernames from the server. This list can contain thousands of usernames. You need to implement a component that finds a
+username from the list based on user input.
+For example given a list of usernames 'fred', 'frank', 'jerry' . When a user types fr , you should filter the list so that
+usernames starting with fr are included ( fred and frank in this case).
+How would you implement this? What data structures and algorithms would you use?
+
+After the client types a character I would submit that character to the server. If I would get 2nd or 3rd character I would repeat my request with the hole string.
+The bigger is the string, the smaller is the list I will get from the server, 
+The server should return a JSON object with the list of usernames that matches with the begining of my stirng.  
+This could be done with jQuery (or React, Angular, Vue or any other front end framework)

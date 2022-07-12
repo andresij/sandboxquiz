@@ -1,0 +1,15 @@
+{
+  "name": "the_sandbox_quiz",
+  "version": "1.0.0",
+  "description": "Object Diff ",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node index.js"
+  },
+  "author": "Andres Ijelman",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^28.1.2"
+  }
+}
